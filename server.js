@@ -1,12 +1,28 @@
 const express = require("express");
 const bots = require("./src/botsData");
 const shuffle = require("./src/shuffle");
+const path = require('path');
+
+// include and initialize the rollbar library with your access token
+var Rollbar = require('rollbar')
+var rollbar = new Rollbar({
+  accessToken: '403bd40fa7d34d2a960197565f9e545a',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+})
+
+// record a generic message and send it to Rollbar
+rollbar.log('Hello world!')
 
 const playerRecord = {
   wins: 0,
   losses: 0,
 };
+
 const app = express();
+
+// Set up middleware to serve static files from the "public" folder
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
 
@@ -37,7 +53,8 @@ const calculateHealthAfterAttack = ({ playerDuo, compDuo }) => {
 
 app.get("/api/robots", (req, res) => {
   try {
-    res.status(200).send(botsArr);
+    // Change the .send(botsArr) to .send(bots)
+    res.status(200).send(bots);
   } catch (error) {
     console.error("ERROR GETTING BOTS", error);
     res.sendStatus(400);
@@ -68,7 +85,8 @@ app.post("/api/duel", (req, res) => {
       playerRecord.losses += 1;
       res.status(200).send("You lost!");
     } else {
-      playerRecord.losses += 1;
+      // Bug Fix: Add to wins instead of losses
+      playerRecord.wins += 1;
       res.status(200).send("You won!");
     }
   } catch (error) {
