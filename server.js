@@ -3,7 +3,7 @@ const bots = require("./src/botsData");
 const shuffle = require("./src/shuffle");
 const path = require('path');
 
-// include and initialize the rollbar library with your access token
+// Include and initialize the rollbar library with your access token
 var Rollbar = require('rollbar')
 var rollbar = new Rollbar({
   accessToken: '403bd40fa7d34d2a960197565f9e545a',
@@ -12,7 +12,7 @@ var rollbar = new Rollbar({
 })
 
 // record a generic message and send it to Rollbar
-rollbar.log('Hello world!')
+rollbar.log('Rollbar Initiated!')
 
 const playerRecord = {
   wins: 0,
@@ -58,6 +58,9 @@ app.get("/api/robots", (req, res) => {
   } catch (error) {
     console.error("ERROR GETTING BOTS", error);
     res.sendStatus(400);
+
+    // Log the error with Rollbar
+    rollbar.error(error);
   }
 });
 
@@ -68,6 +71,9 @@ app.get("/api/robots/shuffled", (req, res) => {
   } catch (error) {
     console.error("ERROR GETTING SHUFFLED BOTS", error);
     res.sendStatus(400);
+
+    // Log the error with Rollbar
+    rollbar.error(error);
   }
 });
 
@@ -80,17 +86,45 @@ app.post("/api/duel", (req, res) => {
       playerDuo,
     });
 
+    // Log that duel was entered
+    rollbar.info('Dual Started', {
+      compDuo: compDuo,
+      playerDuo: playerDuo,
+    });
+
     // comparing the total health to determine a winner
     if (compHealth > playerHealth) {
       playerRecord.losses += 1;
       res.status(200).send("You lost!");
+
+      // Log that the duel was lost
+      rollbar.info('Duel lost', {
+        compHealth,
+        playerHealth,
+        playerRecord,
+      });
+
     } else {
       // Bug Fix: Add to wins instead of losses
       playerRecord.wins += 1;
       res.status(200).send("You won!");
+
+      // Log that the duel was won
+      rollbar.info('Duel won', {
+        compHealth,
+        playerHealth,
+        playerRecord,
+      });
     }
+
   } catch (error) {
     console.log("ERROR DUELING", error);
+    
+    // Log a critical error
+    rollbar.critical('Critical error', {
+      error: error,
+    });
+
     res.sendStatus(400);
   }
 });
