@@ -1,0 +1,99 @@
+Test Plan:
+
+Overview:
+Identify and document bugs in the Duel Duo Game.
+Links:
+http://localhost:3000/
+Test-Criteria:
+	• Test that the ‘See All Bots’ button responds when clicked.
+	• Test that the attack values and health values are represented by correct arithmetic.
+	• Ensure that 'You win!' displays when the user wins and ‘You lost!’ displays when the user loses.
+	• Ensure that the wins and losses fields update correctly
+Entry Criteria:
+	• The test-criteria provided.
+	• Running the version of app for testing.
+	• Computer and stable internet connection
+Exit Criteria:
+	• All high priority have passed.
+	• The allotted time is up.
+Other details:
+	• Environment: Windows
+	• Chrome is the recommended browser but should work on all browsers except for Internet Explorer
+	
+
+Test Case #1
+
+** This test will verify that the player record updated correctly after the duel**
+Steps:
+	• Choose 2 bots for the players duo
+	• Click the duel button
+Test Post Conditions:
+	• A message should appear telling the user whether they won or lost. “You Won!” or “You Lost!”
+	• The wins/losses should increment by 1 depending on if the user won or lost.
+	• The other shouldn’t increment at all
+
+
+Bug Case #1
+
+The Wins column does not increment when the user wins.
+Steps to Reproduce:
+	• Click Play again
+	• Select two bots
+	• Click duel
+Expected Result:
+	• The wins digit should increment by one when the user wins.
+Actual Result:
+	• The loss digit increments by one when the user wins.
+Environment:
+Operating System: Windows 11
+Browser: Google Chrome
+
+
+Test Case #2
+
+** This test will verify that the player record is reset to zero when the page is refreshed**
+Steps:
+	• Choose 2 bots for the players duo
+	• Click the duel button
+Test Post Conditions:
+	• A message should appear telling the user whether they won or lost. “You Won!” or “You Lost!”
+	• The wins/losses should increment by 1 depending on if the user won or lost.
+	• The other shouldn’t increment at all
+
+
+Bug Report #2
+
+**The record doesn't refresh to zero when the page is refreshed.**
+Steps to Reproduce:
+	• Play a game
+	• Click the refresh page button.
+Expected Result:
+	• The wins and losses should revert to 0.
+Actual Result:
+	• The current win/loss records remain and do not revert to 0.
+Environment:
+Operating System: Windows 11
+Browser: Google Chrome
+
+
+Test Case #3
+
+** This test will verify that all bots are displayed when the ‘See All Bots’ button is clicked**
+Steps:
+	• Click the ‘See All Bots’ Button
+Test Post Conditions:
+	• All bots should be displayed
+
+
+Bug Report #3
+
+**The ‘See All Bots’ button doesn’t display the bots**
+Steps to Reproduce:
+	• Click :See All Bots' button again
+Expected Result:
+	• All bots should be displayed
+Actual Result:
+	• The page stays the same and an error is logged to the console.
+Environment:
+Operating System: Windows 11
+Browser: Google Chrome
